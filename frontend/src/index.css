@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.toolbar-btn {
+    @apply px-3 py-1 text-sm bg-gray-200 rounded hover:bg-blue-200 transition;
+}
