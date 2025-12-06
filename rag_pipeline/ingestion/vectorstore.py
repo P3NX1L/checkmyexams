@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from pinecone import Pinecone, ServerlessSpec
+from typing import Optional, List, Dict
 
 load_dotenv()
 
@@ -27,15 +28,23 @@ def get_index():
 
     return pc.Index(INDEX_NAME)
 
-def upsert_vectors(vectors: list):
-    """Upserts a list of vectors into the Pinecone index"""
+def upsert_vectors(vectors: List[Dict], namespace: Optional[str] = None):
+    """Upserts a list of vectors into the Pinecone index
+    Optionally provide namespace to separate tenants/files."""
     index = get_index()
-    index.upsert(vectors=vectors)
-    print(f"Upserted {len(vectors)} vectors to index '{INDEX_NAME}'")
+    if namespace:
+        index.upsert(vectors=vectors, namespace=namespace)
+    else:
+        index.upsert(vectors=vectors)
+    print(f"Upserted {len(vectors)} vectors to index '{INDEX_NAME}' (namespace={namespace})")
 
-def delete_vectors(filter:dict):
+def delete_vectors(filter:Dict, namespace: Optional[str] = None):
     """Deletes vectors from the index that matches a metadata filter"""
     """This function will be useful when the user deletes a Study Space. We just find match the study_space_id with the stored vectors (in the metadata) and delete the vector"""
     index = get_index()
-    index.delete(filer=filter)
-    print(f"Deleted vectors matching {filter}")
+    if namespace:
+        index.delete(filter=filter, namespace=namespace)
+    else:
+        index.delete(filter=filter)
+
+    print(f"Deleted vectors matching {filter} (namespace={namespace})")
