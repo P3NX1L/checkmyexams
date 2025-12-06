@@ -9,3 +9,5 @@ Built an AI exam platform using RAG, exam cloning, and knowledge tracing to gene
 - **LLM output guardrails** to reduce hallucinations and ensure correctness.
 - **FastAPI backend** with modular, scalable architecture.
 - Real-time question generation and feedback APIs.
+
+Pipeline: PDF → Parser → Chunker → Embeddings → Pinecone → Context Builder → LLM (Exam Cloner / Feedback Engine) → Output Validator → API Response
